@@ -1,10 +1,4 @@
 {
-    "build": {
-      "env": {
-        "NPM_CONFIG_PRODUCTION": false
-      },
-      "output": "static"
-    },
     "install": "npm install --legacy-peer-deps"
   }
   
