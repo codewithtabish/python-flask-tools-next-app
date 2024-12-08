@@ -3,9 +3,7 @@
       "env": {
         "NPM_CONFIG_PRODUCTION": false
       },
-      "commands": [
-        "npm install --legacy-peer-deps"
-      ],
+      "installCommand": "npm install --legacy-peer-deps",
       "output": "static"
     }
   }
