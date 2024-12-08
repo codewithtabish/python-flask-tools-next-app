@@ -26,7 +26,7 @@ const Footer = () => {
             {Array.from({ length: 4 }).map((_, index) => (
               <div key={index} className="lg:w-1/4 md:w-1/2 w-full px-4">
                 <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
-                  CATEGORIES
+                  CATEGORIE
                 </h2>
                 <nav className="list-none mb-10">
                   <ul>
