@@ -1,32 +1,36 @@
 # Stage 1: Build
-FROM node:20-alpine AS builder
+FROM node:18-alpine AS builder
 
-# Set working directory
+# Set working directory inside the container
 WORKDIR /app
 
 # Install dependencies
 COPY package.json package-lock.json ./
-RUN npm install --frozen-lockfile
+RUN npm ci --only=production
 
-# Copy source code and build
+# Copy project files
 COPY . .
+
+# Build the Next.js application
 RUN npm run build
 
-# Stage 2: Runtime
-FROM node:20-alpine
+# Stage 2: Production
+FROM node:18-alpine
 
-# Set working directory
+# Set NODE_ENV to production
+ENV NODE_ENV=production
+
+# Set working directory inside the container
 WORKDIR /app
 
-# Install only production dependencies
-COPY package.json package-lock.json ./
-RUN npm install --production --frozen-lockfile
-
-# Copy the built application from the builder stage
-COPY --from=builder /app/.next ./.next
+# Copy dependencies and build artifacts from builder stage
+COPY --from=builder /app/package.json /app/package-lock.json ./
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.js ./next.config.js
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
 
-# Expose port and set environment variables
+# Expose the default Next.js port
 EXPOSE 3000
+
+# Start the Next.js application
 CMD ["npm", "start"]
